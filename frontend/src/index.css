@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  /* Tes couleurs du modèle à la lettre */
+  --color-anthracite: #121212;
+  --color-rose-gold: #E4B1AB;
+  --color-scorpion-violet: #7b2cbf;
+  
+  --font-engineer: 'Exo 2', sans-serif; 
+  --color-rose-gold: #E4B1AB; /* Ta couleur de base */
+}
+
+/* L'effet Miroir Métallique Rose-Gold Pur */
+.text-mirror-rosegold {
+  font-family: 'Exo 2', sans-serif; /* Ou Montserrat pour le côté strict */
+  @apply font-black tracking-tighter uppercase;
+  
+  /* Gradient vertical pour simuler le reflet du métal poli */
+  background-image: linear-gradient(
+    to bottom,
+    #fdf0ed 0%,           /* Reflet clair en haut */
+    #E4B1AB 50%,          /* Couleur Rose-Gold au centre */
+    #af7a73 100%          /* Ombre portée en bas */
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  
+  /* Ombre nette (biseau) sans flou */
+  text-shadow: 1px 2px 0px rgba(126, 90, 85, 0.5);
+}
+
+@layer base {
+  body {
+    background-image: var(--background-image-main-bg);
+    @apply bg-black text-white min-h-screen font-sans;
+  }
+}
+
+/* Tes effets Néon du modèle */
+.neon-border {
+  box-shadow: 0 0 15px rgba(228, 177, 171, 0.4), inset 0 0 10px rgba(228, 177, 171, 0.2);
+}
+
+.neon-text {
+  text-shadow: 0 0 10px rgba(228, 177, 171, 0.8), 0 0 20px rgba(228, 177, 171, 0.4);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@layer utilities {
+  /* Pour que le lotus dans la carte soit subtil et fusionne avec le fond */
+  .lotus-in-card {
+    mix-blend-mode: screen; /* Le rend lumineux sur fond sombre */
+    opacity: 0.3; /* Très subtil par défaut */
+    transition: opacity 0.5s ease; /* Pour l'effet au survol */
+  }
+
+  /* Quand on passe la souris sur la carte parent, le lotus s'illumine */
+  .group:hover .lotus-in-card {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 8px rgba(228, 177, 171, 0.5));
+  }
+}
