@@ -1,6 +1,6 @@
 # React / Frontend
 node_modules/
-dist/
+#dist/
 build/
 .env
 .env.local
