@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import photoProfil from './assets/fehizoro-hero.jpg';
 import lotusBg from './assets/lotus.png';
 
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? "http://127.0.0.1:8000/api"
+  : "https://mooniejeon23.pythonanywhere.com/api";
+
 function App() {
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
 
   useEffect(() => {
     Promise.all([
-      fetch('http://127.0.0.1:8000/api/projects/').then(res => res.json()),
-      fetch('http://127.0.0.1:8000/api/skills/').then(res => res.json())
+      fetch(API_BASE_URL + "projects/").then(res => res.json()),
+      fetch(API_BASE_URL + "skills/").then(res => res.json())
     ])
     .then(([projectsData, skillsData]) => {
       setProjects(Array.isArray(projectsData) ? projectsData : []);
@@ -18,54 +22,37 @@ function App() {
     .catch(err => console.error("Erreur de synchronisation :", err));
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/contact/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        alert("Message envoyé ! Je te répondrai dès que possible ✨");
-        e.target.reset();
-      } else {
-        alert("Oups, petit souci lors de l'envoi.");
-      }
-    } catch (error) {
-      console.error("Erreur d'envoi :", error);
-    }
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('rakotoarisonfehizoro23@gmail.com');
+    alert("Email copié dans le presse-papiers ! ✨");
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#050205] overflow-x-hidden font-sans" 
+    <div className="relative w-full min-h-screen bg-[#050205] overflow-x-hidden font-sans"
          style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #1a0b1a 0%, #050205 70%)' }}>
-      
+
       {/* BACKGROUND : LOTUS GÉANT */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden"> 
-        <img 
-          src={lotusBg} 
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <img
+          src={lotusBg}
           className="absolute max-none opacity-45 animate-float"
-          style={{ 
+          style={{
             width: '1200px',
-            height: 'auto', 
+            height: 'auto',
             minWidth: '1200px',
             top: '-50px',
             left: '50%',
             marginLeft: '-600px',
             display: 'block',
             filter: 'drop-shadow(0 0 20px rgba(228, 177, 171, 0.2))'
-          }} 
-          alt="Lotus Background" 
+          }}
+          alt="Lotus Background"
         />
         <div className="absolute w-[1000px] h-[1000px] bg-purple-900/30 blur-[120px] rounded-full top-0 left-1/2 -ml-[500px] -z-10"></div>
       </div>
 
       <main className="relative z-10 container mx-auto px-6 lg:px-12 py-12 flex flex-col">
-        
+
         <nav className="flex justify-between items-center py-4 border-b border-rose-gold/10 backdrop-blur-md">
           <span className="text-sm tracking-[0.3em] font-light text-rose-gold/80 uppercase">Fehizoro Ingenierie</span>
           <div className="hidden md:flex space-x-8 text-xs tracking-widest text-gray-400">
@@ -77,7 +64,7 @@ function App() {
 
         {/* SECTION HERO */}
         <div className="flex flex-col lg:flex-row justify-between items-center py-20 gap-4">
-          <div className="lg:w-[70%] space-y-6 z-50"> 
+          <div className="lg:w-[70%] space-y-6 z-50">
             <h2 className="text-rose-gold/60 text-lg font-bold tracking-widest uppercase">
               Software Developer & Designer
             </h2>
@@ -87,20 +74,20 @@ function App() {
               </h1>
             </div>
             <p className="text-gray-400 max-w-md leading-relaxed text-lg">
-              Créer des solutions robustes et des expériences visuelles immersives. 
+              Créer des solutions robustes et des expériences visuelles immersives.
               Mon expertise fusionne la rigueur du code et l'esthétique de la 3D.
             </p>
-            <a 
-  href="../public/CV_FEHIZORO.pdf" 
-  target="_blank" 
-  rel="noopener noreferrer"
-  className="px-10 py-3 rounded-md border border-rose-gold text-rose-gold text-sm font-bold hover:bg-rose-gold hover:text-black transition-all duration-500 uppercase tracking-widest inline-block"
->
-  MON CV
-</a>
+            <a
+              href="../media/CV_Fehizoro.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-10 py-3 rounded-md border border-rose-gold text-rose-gold text-sm font-bold hover:bg-rose-gold hover:text-black transition-all duration-500 uppercase tracking-widest inline-block"
+            >
+              MON CV
+            </a>
           </div>
 
-          <div className="relative lg:w-[30%] flex justify-end"> 
+          <div className="relative lg:w-[30%] flex justify-end">
             <div className="w-64 h-64 lg:w-80 lg:h-80 rounded-full border-2 border-rose-gold/30 p-3 bg-black/20 backdrop-blur-sm">
               <div className="w-full h-full rounded-full border-[6px] border-rose-gold overflow-hidden neon-border">
                 <img src={photoProfil} className="w-full h-full object-cover scale-110" alt="Portrait" />
@@ -182,53 +169,48 @@ function App() {
           </div>
         </section>
 
-        {/* SECTION CONTACT */}
+        {/* SECTION CONTACT SIMPLIFIÉE */}
         <section id="contact" className="py-20 relative">
-          <div className="max-w-4xl mx-auto px-4">
-            <h3 className="text-sm tracking-[0.5em] text-gray-500 uppercase mb-12 text-center">Vous voulez me contacter?Faites-le ici ou vistez mes comptes sur les réseaux sociaux</h3>
-            <div className="bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md p-8 shadow-2xl relative overflow-hidden">
-              <img src={lotusBg} className="absolute -bottom-10 -left-10 w-64 opacity-5 pointer-events-none" alt="" />
-              
-              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-rose-gold text-xs uppercase tracking-widest">Nom</label>
-                    <input type="text" name="name" required className="bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:border-rose-gold outline-none transition-all" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-rose-gold text-xs uppercase tracking-widest">Email</label>
-                    <input type="email" name="email" required className="bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:border-rose-gold outline-none transition-all" />
-                  </div>
-                </div>
-                
-                {/* AJOUT DU CHAMP SUJET (NÉCESSAIRE POUR TON MODÈLE DJANGO) */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-rose-gold text-xs uppercase tracking-widest">Sujet</label>
-                  <input type="text" name="subject" required className="bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:border-rose-gold outline-none transition-all" />
-                </div>
+          <div className="max-w-3xl mx-auto px-4">
+            <h3 className="text-sm tracking-[0.5em] text-gray-500 uppercase mb-12 text-center">
+              Me contacter
+            </h3>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-rose-gold text-xs uppercase tracking-widest">Message</label>
-                  <textarea name="message" rows="5" required className="bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:border-rose-gold outline-none transition-all"></textarea>
-                </div>
-                
-                <button type="submit" className="w-full py-4 bg-rose-gold/10 border border-rose-gold/30 text-rose-gold rounded-lg hover:bg-rose-gold hover:text-black transition-all duration-500 font-bold uppercase tracking-widest">
-                  Envoyer le message
+            <div className="bg-[#120a12]/60 border border-rose-gold/20 rounded-2xl backdrop-blur-md p-10 shadow-2xl relative overflow-hidden text-center">
+              <img src={lotusBg} className="absolute -bottom-10 -right-10 w-64 opacity-5 pointer-events-none" alt="" />
+
+              <p className="text-gray-400 text-sm mb-8 tracking-widest leading-relaxed uppercase">
+                Pour toute collaboration ou demande de projet, <br/> mon email est à votre disposition.
+              </p>
+
+              {/* BOÎTE EMAIL */}
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 bg-black/40 border border-rose-gold/30 rounded-xl mb-12">
+                <span className="text-xl md:text-2xl text-rose-gold font-light tracking-wider break-all">
+                  kookiesunshine23@gmail.com
+                </span>
+                <button
+                  onClick={handleCopyEmail}
+                  className="px-8 py-3 bg-rose-gold/10 border border-rose-gold text-rose-gold text-xs font-bold hover:bg-rose-gold hover:text-black transition-all duration-300 uppercase tracking-[0.2em] whitespace-nowrap rounded"
+                >
+                  Copier le mail
                 </button>
-              </form>
+              </div>
+
+              {/* RÉSEAUX SOCIAUX DANS LE CONTENEUR */}
+              <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+                <a href="https://github.com/MoonieJeon23" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Github</a>
+                <a href="https://www.linkedin.com/in/fehizoro-rakotoarison" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Linkedin</a>
+                <a href="https://www.instagram.com/fehizoro_23" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Instagram</a>
+                <a href="https://wa.me/261335845808" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Whatsapp</a>
+              </div>
             </div>
           </div>
         </section>
 
         {/* FOOTER */}
-        <footer className="mt-24 py-12 border-t border-rose-gold/10 text-center space-y-8">
-          <div className="flex justify-center space-x-12 text-xs tracking-[0.4em] text-gray-500 uppercase font-bold">
-            <a href="https://github.com/MoonieJeon23" target="_blank" rel="noreferrer" className="hover:text-rose-gold transition">GITHUB</a>
-            <a href="https://www.linkedin.com/in/fehizoro-rakotoarison" target="_blank" rel="noreferrer" className="hover:text-rose-gold transition">LINKEDIN</a>
-            <a href="https://www.instagram.com/fehizoro_23" target="_blank" rel="noreferrer" className="hover:text-rose-gold transition">INSTAGRAM</a>
-            <a href="https://wa.me/261335845808" target="_blank" rel="noreferrer" className="hover:text-rose-gold transition">WHATSAPP</a>
-          </div>
-          <p className="text-[10px] text-gray-600 tracking-[0.5em] uppercase">© 2026 FEHIZORO RAKOTOARISON — Built with Django & React</p>
+        <footer className="mt-24 py-12 border-t border-rose-gold/10 text-center space-y-4">
+          <p className="text-[10px] text-gray-600 tracking-[0.5em] uppercase">© 2026 FEHIZORO RAKOTOARISON — Antananarivo, Madagascar</p>
+          <p className="text-[9px] text-gray-700 tracking-[0.2em] uppercase">Built with Django & React</p>
         </footer>
 
       </main>
