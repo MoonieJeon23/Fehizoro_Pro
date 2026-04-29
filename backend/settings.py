@@ -1,19 +1,14 @@
 import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-8o9n15n9kh$*o!q-h5d(nu208h(c)n!p^&mr&-%5bv=i_5%t44'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# AJOUT : Ton nom d'utilisateur PythonAnywhere pour que le site fonctionne en ligne
-ALLOWED_HOSTS = ['fehizoro.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['mooniejeon23.pythonanywhere.com', 'localhost', '127.0.0.1']
 
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,31 +22,44 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # Toujours en premier !
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware', # Gardé commenté pour le 403
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://fehizoro.pythonanywhere.com", # AJOUT pour ton futur déploiement
-]
+# --- CONFIGURATION CORS ---
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = ['https://mooniejeon23.pythonanywhere.com']
+CSRF_EXEMPT_PATHS = ['/api/contact/']
+
+# --- CONFIGURATION DE L'EMAIL ---
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kookiesunshine23@gmail.com'
+EMAIL_HOST_PASSWORD = 'hxze gfhj wsbt knac'
+
+# Correction Robuste pour PythonAnywhere
+if any(k in os.environ for k in ['PYTHONANYWHERE_SITE', 'PYTHONANYWHERE_DOMAIN']):
+    EMAIL_USE_PROXY = True
 
 ROOT_URLCONF = 'backend.urls'
 
-# CHEMIN VERS LE FRONTEND (Vite génère un dossier 'dist')
+# --- CONFIGURATION DES CHEMINS FRONTEND ---
 FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend', 'dist')
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [FRONTEND_DIR], # Django cherchera ton index.html ici
+        'DIRS': [FRONTEND_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -74,7 +81,6 @@ DATABASES = {
     }
 }
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -82,33 +88,18 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'fr-fr'
+TIME_ZONE = 'Indian/Antananarivo'
 USE_I18N = True
 USE_TZ = True
 
-# --- CONFIGURATION DES FICHIERS STATIQUES ---
-STATIC_URL = 'static/'
-
-# Où Django va collecter tous les fichiers statiques pour la production
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(FRONTEND_DIR, 'assets')]
 
-# Où Django doit aller chercher les fichiers générés par React (CSS, JS)
-STATICFILES_DIRS = [
-    os.path.join(FRONTEND_DIR, 'assets'),
-]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(FRONTEND_DIR, 'assets')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- CONFIGURATION DES MÉDIAS (Images des projets) ---
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# --- CONFIGURATION DE L'EMAIL ---
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'kookiesunshine23@gmail.com'
-EMAIL_HOST_PASSWORD = 'hxze gfhj wsbt knac' # Ton mot de passe d'application
+APPEND_SLASH = True
