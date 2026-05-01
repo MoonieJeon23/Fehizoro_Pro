@@ -1,12 +1,26 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-# Importe tes vues ici (ex: ProjectViewSet, SkillViewSet)
-# de la manière dont tu les as nommées dans core/views.py
+from rest_framework import viewsets
+from .models import Project, Skill, Experience
+from .serializers import ProjectSerializer, SkillSerializer, ExperienceSerializer
 
-router = DefaultRouter()
-# router.register(r'projects', ProjectViewSet)
-# router.register(r'skills', SkillViewSet)
+class ProjectViewSet(viewsets.ModelViewSet):
+    """
+    Vue pour gérer les projets.
+    Permet de lister et de voir les détails de tes réalisations.
+    """
+    queryset = Project.objects.all().order_by('-created_at')
+    serializer_class = ProjectSerializer
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+class SkillViewSet(viewsets.ModelViewSet):
+    """
+    Vue pour les compétences.
+    Indispensable pour l'affichage filtré par catégories dans React.
+    """
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+
+class ExperienceViewSet(viewsets.ModelViewSet):
+    """
+    Vue pour ton parcours professionnel et associatif.
+    """
+    queryset = Experience.objects.all()
+    serializer_class = ExperienceSerializer

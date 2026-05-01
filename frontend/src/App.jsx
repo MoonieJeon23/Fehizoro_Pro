@@ -1,35 +1,36 @@
 import React, { useState, useEffect } from 'react';
+// Importation de ton nouveau fichier de tuyautage
+import { projectAPI, skillAPI } from './api'; 
 import photoProfil from './assets/fehizoro-hero.jpg';
 import lotusBg from './assets/lotus.png';
-
-const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "http://127.0.0.1:8000/api"
-  : "https://mooniejeon23.pythonanywhere.com/api";
 
 function App() {
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
 
   useEffect(() => {
+    // Utilisation d'Axios via ton fichier api.js
+    // Plus besoin de gérer les .json() manuellement, Axios le fait pour toi
     Promise.all([
-      fetch(API_BASE_URL + "projects/").then(res => res.json()),
-      fetch(API_BASE_URL + "skills/").then(res => res.json())
+      projectAPI.getAll(),
+      skillAPI.getAll()
     ])
-    .then(([projectsData, skillsData]) => {
-      setProjects(Array.isArray(projectsData) ? projectsData : []);
-      setSkills(Array.isArray(skillsData) ? skillsData : []);
+    .then(([projectsRes, skillsRes]) => {
+      // Axios range les données dans la propriété .data
+      setProjects(Array.isArray(projectsRes.data) ? projectsRes.data : []);
+      setSkills(Array.isArray(skillsRes.data) ? skillsRes.data : []);
     })
-    .catch(err => console.error("Erreur de synchronisation :", err));
+    .catch(err => console.error("Erreur de synchronisation avec Django :", err));
   }, []);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('rakotoarisonfehizoro23@gmail.com');
+    navigator.clipboard.writeText('kookiesunshine23@gmail.com');
     alert("Email copié dans le presse-papiers ! ✨");
   };
 
   return (
     <div className="relative w-full min-h-screen bg-[#050205] overflow-x-hidden font-sans"
-         style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #1a0b1a 0%, #050205 70%)' }}>
+          style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #1a0b1a 0%, #050205 70%)' }}>
 
       {/* BACKGROUND : LOTUS GÉANT */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -78,7 +79,7 @@ function App() {
               Mon expertise fusionne la rigueur du code et l'esthétique de la 3D.
             </p>
             <a
-              href="../media/CV_Fehizoro.pdf"
+              href="../media/CVFehizoro.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="px-10 py-3 rounded-md border border-rose-gold text-rose-gold text-sm font-bold hover:bg-rose-gold hover:text-black transition-all duration-500 uppercase tracking-widest inline-block"
@@ -177,8 +178,12 @@ function App() {
             </h3>
 
             <div className="bg-[#120a12]/60 border border-rose-gold/20 rounded-2xl backdrop-blur-md p-10 shadow-2xl relative overflow-hidden text-center">
-              <img src={lotusBg} className="absolute -bottom-10 -right-10 w-64 opacity-5 pointer-events-none" alt="" />
-
+              <img 
+  src={lotusBg} 
+  className="absolute -bottom-10 -right-10 w-64 opacity-30 animate-pulse pointer-events-none" 
+  style={{ filter: 'drop-shadow(0 0 15px rgba(228, 177, 171, 0.3))' }}
+  alt="" 
+/>
               <p className="text-gray-400 text-sm mb-8 tracking-widest leading-relaxed uppercase">
                 Pour toute collaboration ou demande de projet, <br/> mon email est à votre disposition.
               </p>
@@ -196,7 +201,7 @@ function App() {
                 </button>
               </div>
 
-              {/* RÉSEAUX SOCIAUX DANS LE CONTENEUR */}
+              {/* RÉSEAUX SOCIAUX */}
               <div className="flex flex-wrap justify-center gap-8 md:gap-12">
                 <a href="https://github.com/MoonieJeon23" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Github</a>
                 <a href="https://www.linkedin.com/in/fehizoro-rakotoarison" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Linkedin</a>
