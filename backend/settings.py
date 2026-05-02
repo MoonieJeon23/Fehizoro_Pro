@@ -6,8 +6,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- SÉCURITÉ ---
 SECRET_KEY = 'django-insecure-8o9n15n9kh$*o!q-h5d(nu208h(c)n!p^&mr&-%5bv=i_5%t44'
-DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# Passe à False pour le serveur (fini le debug local)
+DEBUG = False
+
+# On autorise ton domaine et le 'www' pour éviter les erreurs 400
+ALLOWED_HOSTS = ['mooniejeon23.pythonanywhere.com', 'https//:mooniejeon23.pythonanywhere.com']
 
 # --- APPLICATIONS ---
 INSTALLED_APPS = [
@@ -59,7 +62,7 @@ FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend', 'dist')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')], 
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,7 +98,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kookiesunshine23@gmail.com'
-EMAIL_HOST_PASSWORD = 'hxze gfhj wsbt knac' 
+EMAIL_HOST_PASSWORD = 'hxze gfhj wsbt knac'
 
 # --- AUTRES ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

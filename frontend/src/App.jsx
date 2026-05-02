@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // Importation de ton nouveau fichier de tuyautage
-import { projectAPI, skillAPI } from './api'; 
+import { projectAPI, skillAPI } from './api';
 import photoProfil from './assets/fehizoro-hero.jpg';
 import lotusBg from './assets/lotus.png';
 
@@ -142,7 +142,7 @@ function App() {
                 Development & Tools
               </h4>
               <div className="flex flex-wrap lg:justify-end gap-4">
-                {skills.filter(s => s.category === 'DEV').map(skill => (
+                {skills.filter(s => s.category === 'tech').map(skill => (
                   <div key={skill.id} className="px-5 py-2.5 bg-[#120a12]/80 border border-rose-gold/20 rounded-full backdrop-blur-md text-gray-200 text-xs md:text-sm hover:border-rose-gold hover:text-rose-gold transition-all cursor-default font-medium tracking-wide shadow-lg">
                     {skill.name}
                   </div>
@@ -160,7 +160,7 @@ function App() {
                   Tools & Soft Skills
               </h4>
               <div className="flex flex-wrap gap-4">
-                {skills.filter(s => s.category !== 'DEV').map(skill => (
+                {skills.filter(s => s.category !== 'tech').map(skill => (
                   <div key={skill.id} className="px-5 py-2.5 bg-[#120a12]/80 border border-rose-gold/20 rounded-full backdrop-blur-md text-gray-200 text-xs md:text-sm hover:border-rose-gold hover:text-rose-gold transition-all cursor-default font-medium tracking-wide shadow-lg">
                     {skill.name}
                   </div>
@@ -178,11 +178,11 @@ function App() {
             </h3>
 
             <div className="bg-[#120a12]/60 border border-rose-gold/20 rounded-2xl backdrop-blur-md p-10 shadow-2xl relative overflow-hidden text-center">
-              <img 
-  src={lotusBg} 
-  className="absolute -bottom-10 -right-10 w-64 opacity-30 animate-pulse pointer-events-none" 
+              <img
+  src={lotusBg}
+  className="absolute -bottom-10 -right-10 w-64 opacity-30 animate-pulse pointer-events-none"
   style={{ filter: 'drop-shadow(0 0 15px rgba(228, 177, 171, 0.3))' }}
-  alt="" 
+  alt=""
 />
               <p className="text-gray-400 text-sm mb-8 tracking-widest leading-relaxed uppercase">
                 Pour toute collaboration ou demande de projet, <br/> mon email est à votre disposition.

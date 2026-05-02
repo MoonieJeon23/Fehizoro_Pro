@@ -22,7 +22,7 @@ urlpatterns = [
 
 # 2. Service des fichiers médias et statiques
 # On les place ICI pour qu'ils soient prioritaires sur le routage du Frontend
-if settings.DEBUG:
+if settings.DEBUG or not settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
