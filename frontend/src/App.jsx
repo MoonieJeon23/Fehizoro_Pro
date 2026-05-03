@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-// Importation de ton nouveau fichier de tuyautage
 import { projectAPI, skillAPI } from './api';
 import photoProfil from './assets/fehizoro-hero.jpg';
 import lotusBg from './assets/lotus.png';
+
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://127.0.0.1:8000'
+  : 'https://mooniejeon23.pythonanywhere.com';
 
 function App() {
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
 
   useEffect(() => {
-    // Utilisation d'Axios via ton fichier api.js
-    // Plus besoin de gérer les .json() manuellement, Axios le fait pour toi
     Promise.all([
       projectAPI.getAll(),
       skillAPI.getAll()
     ])
     .then(([projectsRes, skillsRes]) => {
-      // Axios range les données dans la propriété .data
       setProjects(Array.isArray(projectsRes.data) ? projectsRes.data : []);
       setSkills(Array.isArray(skillsRes.data) ? skillsRes.data : []);
     })
@@ -78,13 +78,15 @@ function App() {
               Créer des solutions robustes et des expériences visuelles immersives.
               Mon expertise fusionne la rigueur du code et l'esthétique de la 3D.
             </p>
+            
+            {/* REMPLACEMENT DU BOUTON CV PAR LINKEDIN */}
             <a
-              href="../media/CVFehizoro.pdf"
+              href="https://www.linkedin.com/in/fehizoro-rakotoarison"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-10 py-3 rounded-md border border-rose-gold text-rose-gold text-sm font-bold hover:bg-rose-gold hover:text-black transition-all duration-500 uppercase tracking-widest inline-block"
+              className="px-10 py-3 rounded-md border border-rose-gold text-rose-gold text-sm font-bold hover:bg-rose-gold hover:text-black transition-all duration-500 uppercase tracking-widest inline-block shadow-[0_0_15px_rgba(228,177,171,0.2)]"
             >
-              MON CV
+              VOIR MON PROFIL LINKEDIN
             </a>
           </div>
 
@@ -108,11 +110,15 @@ function App() {
               <div key={project.id} className="group relative flex flex-col bg-[#120a12]/60 border border-rose-gold/20 rounded-xl backdrop-blur-md p-6 hover:border-rose-gold/50 transition-all duration-500 h-full shadow-lg">
                 <div className="relative z-10 flex flex-col h-full">
                   <div className="w-full aspect-video bg-black/40 rounded-lg mb-4 overflow-hidden">
-                    {project.image ? (
-                      <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                    ) : (
-                      <div className="w-full h-full bg-black/20" />
-                    )}
+                   {project.image ? (
+  <img 
+    src={project.image.startsWith('http') ? project.image : `${API_BASE_URL}${project.image}`} 
+    alt={project.title} 
+    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+  />
+) : (
+  <div className="w-full h-full bg-black/20" />
+)}
                   </div>
                   <div className="flex-grow">
                     <h4 className="text-rose-gold font-bold text-2xl uppercase tracking-wider leading-tight">{project.title}</h4>
@@ -170,7 +176,7 @@ function App() {
           </div>
         </section>
 
-        {/* SECTION CONTACT SIMPLIFIÉE */}
+        {/* SECTION CONTACT */}
         <section id="contact" className="py-20 relative">
           <div className="max-w-3xl mx-auto px-4">
             <h3 className="text-sm tracking-[0.5em] text-gray-500 uppercase mb-12 text-center">
@@ -179,16 +185,15 @@ function App() {
 
             <div className="bg-[#120a12]/60 border border-rose-gold/20 rounded-2xl backdrop-blur-md p-10 shadow-2xl relative overflow-hidden text-center">
               <img
-  src={lotusBg}
-  className="absolute -bottom-10 -right-10 w-64 opacity-30 animate-pulse pointer-events-none"
-  style={{ filter: 'drop-shadow(0 0 15px rgba(228, 177, 171, 0.3))' }}
-  alt=""
-/>
+                src={lotusBg}
+                className="absolute -bottom-10 -right-10 w-64 opacity-30 animate-pulse pointer-events-none"
+                style={{ filter: 'drop-shadow(0 0 15px rgba(228, 177, 171, 0.3))' }}
+                alt=""
+              />
               <p className="text-gray-400 text-sm mb-8 tracking-widest leading-relaxed uppercase">
                 Pour toute collaboration ou demande de projet, <br/> mon email est à votre disposition.
               </p>
 
-              {/* BOÎTE EMAIL */}
               <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 bg-black/40 border border-rose-gold/30 rounded-xl mb-12">
                 <span className="text-xl md:text-2xl text-rose-gold font-light tracking-wider break-all">
                   kookiesunshine23@gmail.com
@@ -201,10 +206,10 @@ function App() {
                 </button>
               </div>
 
-              {/* RÉSEAUX SOCIAUX */}
+              {/* RÉSEAUX SOCIAUX MIS À JOUR */}
               <div className="flex flex-wrap justify-center gap-8 md:gap-12">
                 <a href="https://github.com/MoonieJeon23" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Github</a>
-                <a href="https://www.linkedin.com/in/fehizoro-rakotoarison" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Linkedin</a>
+                <a href="https://www.facebook.com/kajiniaina.rakotoarisoa/" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Facebook</a>
                 <a href="https://www.instagram.com/fehizoro_23" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Instagram</a>
                 <a href="https://wa.me/261335845808" target="_blank" rel="noreferrer" className="text-xs tracking-[0.3em] text-gray-500 hover:text-rose-gold transition uppercase font-bold">Whatsapp</a>
               </div>
@@ -212,7 +217,6 @@ function App() {
           </div>
         </section>
 
-        {/* FOOTER */}
         <footer className="mt-24 py-12 border-t border-rose-gold/10 text-center space-y-4">
           <p className="text-[10px] text-gray-600 tracking-[0.5em] uppercase">© 2026 FEHIZORO RAKOTOARISON — Antananarivo, Madagascar</p>
           <p className="text-[9px] text-gray-700 tracking-[0.2em] uppercase">Built with Django & React</p>
